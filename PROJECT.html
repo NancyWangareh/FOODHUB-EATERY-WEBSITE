@@ -1,0 +1,341 @@
+<!doctype html>
+<html>
+  <head>
+    <title>My COSC 326 Website Project</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <style type="text/css">
+      /* reset/layout */
+      * { box-sizing: border-box; }
+      html, body { height: 100%; margin: 0; font-family: Arial, sans-serif; }
+
+      /* hero section that holds the blurred background */
+      .hero {
+          position: relative;
+          min-height: 100vh;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 2rem;
+          text-align: center;
+          overflow: hidden;
+      }
+
+      .hero::before {
+          content: "";
+          position: absolute;
+          inset: 0;
+          background-image: url('IMG-20251122-WA0014.jpg');
+          background-size: cover;
+          background-position: center;
+          filter: blur(10px);
+          transform: scale(1.05);
+          z-index: 0;
+      }
+
+      /* optional semi-opaque overlay to improve text contrast */
+      .hero::after {
+          content: "";
+          position: absolute;
+          inset: 0;
+          background: rgba(0,0,0,0.35);
+          z-index: 1;
+      }
+
+      /* BRAND: fixed to top-left, aligned with topnav links */
+      .brand {
+          position: fixed;
+          top: 1rem;       /* same top as .topnav below */
+          left: 1rem;
+          z-index: 9999;   /* above hero overlay */
+          text-align: center;
+          color: #fff;
+          background: transparent;
+          pointer-events: auto;
+      }
+      .brand h1 { margin: 0; font-size: clamp(2.5rem, 2.8vw, 2.0rem); line-height: 1.5; font-family: Lucida calligraphy;}
+      .brand p  { margin: 1.0rem 0 0; font-size: 0.85rem; color: rgba(255,255,255,0.95); }
+
+      /* TOPNAV: fixed top-right and aligned to same top value as .brand */
+      .topnav {
+          position: fixed;
+          top: 1rem;       /* keep same value as .brand to align vertically */
+          right: 1rem;
+          z-index: 9998;
+          display: flex;
+          gap: 0.5rem;
+          align-items: center;
+          background: rgba(0,0,0,0.30);
+          padding: 0.35rem 0.5rem;
+          border-radius: 8px;
+          backdrop-filter: blur(4px);
+      }
+
+      .topnav a {
+          color: #fff;
+          text-decoration: none;
+          padding: 0.45rem 0.7rem;
+          font-weight: 600;
+          border-radius: 6px;
+          display: inline-block;
+          transition: background .12s ease, transform .12s ease;
+          font-size: 0.95rem;
+      }
+
+      .topnav a:hover,
+      .topnav a:focus {
+          background: rgba(255,255,255,0.08);
+          transform: translateY(-2px);
+          outline: none;
+      }
+
+      /* content sits above the background and overlay and is centered */
+      .hero .content {
+          position: relative;
+          z-index: 2;
+          padding: 3.5rem 3rem 2rem; /* increased top padding to make room for top-left header */
+          max-width: 900px;
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          gap: 0.75rem;
+         
+      }
+
+      /* actions (buttons) - stacked vertically and larger */
+      .actions {
+          display: flex;
+          flex-direction: column;     /* stack vertically */
+          gap: 1rem;                  /* space between buttons */
+          margin-top: 1rem;
+          align-items: center;        /* center buttons horizontally */
+          width: 100%;
+          max-width: 380px;           /* control overall button column width */
+      }
+
+      .btn {
+          
+          padding: 0.95rem 1.25rem;   /* larger tappable area */
+          border-radius: 10px;
+          text-decoration: none;
+          color: #121212;
+          background: #ffd166;
+          font-weight: 700;
+          font-size: 1.15rem;         /* larger text */
+          transition: transform .12s ease, box-shadow .12s ease;
+          box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+          width: 100%;                /* full width of the action column */
+          text-align: center;
+      }
+
+      .btn.secondary {
+          background: rgba(255,255,255,0.12);
+          color: #fff;
+          border: 1px solid rgba(255,255,255,0.12);
+      }
+
+      .btn:hover {
+          transform: translateY(-3px);
+          box-shadow: 0 10px 24px rgba(0,0,0,0.28);
+      }
+
+      /* NEW: make the menu box a flex container placed after the buttons box */
+      .menu-box {
+        
+        align-items: center;           /* center the grid horizontally */
+        gap: 1rem;                     /* space between heading and grid */
+        position: relative;
+        z-index: 2;
+        max-width: 1100px;
+        width: calc(100% - 2rem);
+        margin: 2.25rem auto;
+        /* removed background / border / shadow so there's no outer "box" */
+        background: transparent;
+        border-radius: 0;
+        padding: 0;               /* if you want spacing keep e.g. padding: 0.5rem; */
+        box-shadow: none;
+        color: #fff;
+      }
+
+      /* heading: keep simple block */
+      .menu-box h2 {
+        margin: 0 0 0.75rem 0;
+        font-size: 1.35rem;
+        font-weight: 700;
+        color: #fff;
+        padding-left: .25rem;
+      }
+
+    /* Make dishes line up side-by-side (horizontal) and wrap to new rows */
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 300px); /* fixed column width */
+      justify-content: center;                         /* center the whole grid */
+      gap: 1rem;
+      width: 100%;
+      align-items: start;
+      padding: 0;
+    }
+
+    /* fixed-size horizontal card so all boxes are equal */
+    .dish {
+      width: 300px;              /* same as grid column width */
+      height: 220px;             /* fixed height for equal sizing */
+      display: flex;
+      flex-direction: row;
+      align-items: stretch;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 10px;
+      overflow: hidden;
+      transition: transform .12s ease, box-shadow .12s ease;
+    }
+
+    .dish img {
+      width: 45%;                /* image takes left portion */
+      height: 100%;
+      object-fit: cover;
+      flex-shrink: 0;
+      display: block;
+    }
+
+    .dish .info {
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      text-align: left;
+      width: 55%;
+    }
+
+    /* responsive: smaller fixed width on small screens, stack vertically */
+    @media (max-width: 640px) {
+      .menu-grid { grid-template-columns: 1fr; justify-items: center; }
+      .dish { width: calc(100% - 2rem); flex-direction: column; height: auto; }
+      .dish img { width: 100%; height: 140px; }
+      .dish .info { width: 100%; align-items: center; text-align: center; padding: .9rem; }
+    }
+
+      /* responsive: ensure single column on very small screens */
+      @media (max-width: 420px) {
+        .menu-grid { grid-template-columns: 1fr; gap: 0.75rem; }
+        .dish img { height: 120px; }
+        .dish { min-height: 220px; }
+      }
+
+      @media (max-width: 480px) {
+        .dish img { height: 120px; }
+        .menu-grid { gap: 0.75rem; }
+      }
+
+      @media (max-width: 640px) {
+          .topnav {
+              right: 0.5rem;
+              top: 0.5rem;
+              padding: 0.25rem 0.4rem;
+              gap: 0.35rem;
+          }
+          .topnav a { padding: 0.35rem 0.5rem; font-size: 0.9rem; }
+          .hero { padding: 1rem; }
+          .hero .content { padding: 2.75rem 1rem 1rem; }
+          .actions { max-width: 100%; gap: 0.75rem; }
+          .btn { font-size: 1.05rem; padding: 0.85rem 1rem; }
+          .brand { top: 0.6rem; left: 0.6rem; }
+          .brand h1 { font-size: 1.25rem; }
+          .menu-box { width: calc(100% - 1.5rem); margin-top: 1.5rem; padding: 1rem; }
+          .dish img { height: 120px; }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- MOVED: brand is now outside the content box and fixed to the page top-right -->
+    <div class="brand" aria-hidden="false">
+      <h1>FOODHUB EATERY</h1>
+      <p><i>A place to be for the best Kenyan local dishes</i></p>
+    </div>
+
+    <!-- top-right links -->
+    <nav class="topnav" role="navigation" aria-label="Top links">
+      <a href="PROJECT.html" aria-label="Home">Home</a>
+      <a href="Menu.html" aria-label="Menu">Menu</a>
+      <a href="About.html" aria-label="About">About</a>
+      <a href="Feedback.html" aria-label="Feedback">Feedback</a>
+    </nav>
+
+    <section class="hero">
+      <div class="content">
+        
+    <!-- menu-box remains a separate box but now uses flex and sits after the buttons box -->
+
+    <section class="menu-box" aria-label="Our dishes">
+      <h2>Our Dishes</h2>
+
+      <div class="menu-grid" role="list">
+        <div class="dish">
+          <img src="IMG-20251122-WA0013.jpg" alt="Nyama Choma">
+          <div class="info">
+            <h3>Ugali beef</h3>
+            <p><i>Grilled beef with kachumbari and veggies</i></p>
+            <span class="btn" class="price">Ksh 250</span>
+          </div>
+        </div>
+
+        <div class="dish">
+          <img src="IMG-20251122-WA0016.jpg" alt="Shawarma">
+          <div class="info">
+            <h3>Shawarma</h3>
+            <p><i>Meaty shawarma</i></p>
+            <span class="btn" class="price">Ksh 200</span>
+          </div>
+        </div>
+
+        <div class="dish">
+          <img src="IMG-20251122-WA0020.jpg" alt="Fish Stew">
+          <div class="info">
+            <h3>Fish Stew</h3>
+            <p><i>Coconut-spiced fish stew</i></p>
+            <span class="btn" class="price">Ksh 200</span>
+          </div>
+        </div>
+        
+        <div class="dish">
+          <img src="IMG-20251122-WA0022.jpg" alt="Chapati beans">
+          <div class="info">
+            <h3>Chapati beans</h3>
+            <p><i>Chapati beans and greens</i></p>
+            <span class="btn" class="price">Ksh 80</span>
+          </div>
+        </div>
+        <div class="dish">
+          <img src="IMG-20251122-WA0017.jpg" alt="Loaded Fries">
+          <div class="info">
+            <h3>Loaded Fries</h3>
+            <p><i>Cheesy loaded fries</i></p>
+            <span class="btn" class="price">Ksh 250</span>
+      </div>
+        </div>
+      <div class="dish">
+          <img src="IMG-20251122-WA0021.jpg" alt="Fried chicken">
+          <div class="info">
+            <h3>Fried chicken</h3>
+            <p><i>Grilled fried chicken</i></p>
+            <span  class="btn" class="price">Ksh 300</span>
+      </div>
+        </div>
+      </div>
+
+      <!-- Order button (uses existing .btn styles) -->
+      <div class="order-row" style="display:flex;justify-content:center;margin-top:1rem;">
+        <a class="btn" href="order.html" aria-label="Order now">Order Now</a>
+      </div>
+    </section>
+    </div>
+      </div>
+    </section>
+
+    <!-- ...existing code... -->
+  </body>
+</html>
