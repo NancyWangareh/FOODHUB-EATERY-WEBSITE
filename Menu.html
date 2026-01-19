@@ -1,0 +1,137 @@
+<html>
+    <head>
+        <title>Our Menu</title>
+        
+        <style type="text/css">
+            /* reset/layout */
+            * { box-sizing: border-box; }
+            html, body { height: 100%; margin: 0; font-family: Arial, sans-serif; }
+
+            /* hero section that holds the blurred background */
+            .hero {
+                position: relative;
+                min-height: 100vh;
+                display: flex;                /* center content horizontally & vertically */
+                align-items: center;          /* vertical centering */
+                justify-content: center;      /* horizontal centering */
+                color: #fff;
+                overflow: hidden;
+                padding: 3rem 1.5rem;
+                text-align: center;           /* center inline text */
+            }
+
+            /* blurred background image layer */
+            .hero::before {
+                content: "";
+                position: absolute;
+                inset: 0; /* top:0; right:0; bottom:0; left:0; */
+                background-image: url('IMG-20251122-WA0019.jpg');
+                background-size: cover;
+                background-position: center;
+                filter: blur(8px);
+                transform: scale(1.05); /* avoid visible edges when blurred */
+                z-index: 0;
+            }
+
+            /* optional dark overlay for better contrast */
+            .hero::after {
+                content: "";
+                position: absolute;
+                inset: 0;
+                background: rgba(0,0,0,0.35);
+                z-index: 1;
+            }
+
+            /* content sits above background/overlay */
+            .hero .content {
+                position: relative;
+                z-index: 2;
+                max-width: 900px;
+                margin: 0;                   /* remove auto margin since flex centers it */
+                color: #fff;
+                text-align: center;          /* center headings and inline text */
+                width: 100%;
+            }
+
+            /* headings and lists */
+            h1 {
+                color: #e1e4e7;
+                font-size: 5rem;
+                margin: 0 0 1rem 0;
+                font-family: 'Lucida calligraphy';
+            }
+
+            dl dt {
+                font-weight: 700;
+                font-size: 3rem;
+                margin-top: 1.25rem;
+                color: #bdcadb;
+            }
+
+            /* center the whole list block while keeping list items left-aligned */
+            ul {
+                margin: 0.75rem auto 1rem;
+                padding: 0;
+                list-style: disc inside;
+                color: #f7f7f7;
+                font-size: 1.5rem;
+                display: inline-block;       /* makes the list block centered by the parent's text-align */
+                text-align: left;            /* keep bullet items left-aligned inside the block */
+                min-width: 220px;
+                font-style: italic;            /* optional: prevent extremely narrow lists on small screens */
+            }
+
+            dd { margin: 0; }
+
+            /* make sure page is readable on small screens */
+            @media (max-width: 480px) {
+                .hero { padding: 2rem 1rem; }
+                h1 { font-size: 1.6rem; 
+                font-style: italic;}
+                ul { min-width: 160px; width: 100%; display: block; text-align: left; padding-left: 1rem; font-style: italic; }
+            }
+        </style>
+    </head>
+    <body>
+        <section class="hero">
+            <div class="content">
+                <h1>FoodHub Eatery Menu</h1>
+
+                <dl><dt>Appetizers</dt></dl>
+                <ul>
+                    <li>Samosas - ksh.100</li>
+                    <li>Mandazi - ksh.50</li>
+                    <li>Chapati - ksh.30</li>
+                </ul>
+
+                <dl><dt>Main Courses</dt></dl>
+                <ul>
+                    <li>1kg Nyama Choma         - ksh.250</li>
+                    <li>Githeri                 - ksh.80</li>
+                    <li>Ugali with Sukuma Wiki  - ksh.70</li>
+                    <li>Fish Stew               - ksh.200</li>
+                    <li>Plain Rice              - ksh.60</li>
+                    <li>Plain Ugali             - ksh.50</li>
+                    <li>Rice/Ugali with cereals - ksh.80</li>
+                </ul>
+
+                <dl><dt>Desserts</dt></dl>
+                <ul>
+                    <li>Mango Sorbet         - ksh.250</li>
+                    <li>Coconut Rice Pudding - ksh.150</li>
+                    <li>Fruit Salad          - ksh.100</li>
+                </ul>
+
+                <dl><dt>Beverages</dt></dl>
+                <ul>
+                    <li>Kenyan Chai   - ksh.50</li>
+                    <li>Fruit Juice   - ksh.100</li>
+                    <li>Cocktail      - ksh.150</li>
+                    <li>Coconut Water - ksh.150</li>
+                    <li>Coffee        - ksh.50</li>
+                    <li>Hot cocoa     - ksh.50</li>
+                </ul>
+            </div>
+        </section>
+    </body>
+</html>
